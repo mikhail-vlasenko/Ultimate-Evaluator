@@ -45,5 +45,8 @@ class Controller:
     def act(self):
         self.copy()
         text = self.read_clipboard()
-        result = Evaluator.evaluate(text)
+        if Preferences.mode == 'advanced':
+            result = Evaluator.advanced_eval_wrapper(text)
+        else:
+            result = Evaluator.evaluate(text)
         self.write(result)
