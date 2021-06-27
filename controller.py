@@ -46,5 +46,4 @@ class Controller:
         self.copy()
         text = self.read_clipboard()
         result = Evaluator.evaluate(text)
-        self.write(' = ' + str(result))
-
+        self.write(result)
