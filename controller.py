@@ -3,6 +3,7 @@ from pynput import keyboard
 from tkinter import Tk
 from evaluator import Evaluator
 from preferences import Preferences
+import logging
 
 
 class Controller:
@@ -45,8 +46,12 @@ class Controller:
     def act(self):
         self.copy()
         text = self.read_clipboard()
+        logging.info(f'initial text\n{text}')
         if Preferences.mode == 'advanced':
             result = Evaluator.advanced_eval_wrapper(text)
+        elif Preferences.mode == 'wolfram':
+            result = Evaluator.wolfram_eval(text)
         else:
-            result = Evaluator.evaluate(text)
+            result = Evaluator.simple_eval(text)
+        logging.info(f'result:\n{result}')
         self.write(result)

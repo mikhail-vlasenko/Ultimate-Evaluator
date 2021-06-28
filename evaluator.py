@@ -1,26 +1,13 @@
 from simpleeval import simple_eval
-import re
 import math
+import requests
+from bs4 import BeautifulSoup
+from preferences import Preferences
+import logging
+from cleaner import Cleaner
 
 
 class Evaluator:
-    @staticmethod
-    def remove_letters(text):
-        text = re.sub(r'[a-zA-Z]', '', text)
-        return text
-
-    @staticmethod
-    def add_equals(text):
-        result = ' = '
-        spaces = re.compile('[ \t\n,:?!<>]')
-        text = re.sub(spaces, '', text)
-        if text == '':
-            return '', ''
-        if text[-1] == '=':
-            result = ''
-            text = text[:-1]
-        return text, result
-
     @staticmethod
     def map_brackets(text):
         stack = []
@@ -35,21 +22,26 @@ class Evaluator:
         return jump_list
 
     @staticmethod
-    def evaluate(text):
-        print(f'initial text\n{text}')
-        text, result = Evaluator.add_equals(text)
-        expr = Evaluator.remove_letters(text)
-        print(f'evaluating\n{expr}')
-        result += str(simple_eval(expr))
+    def simple_eval(text):
+        expr, result = Cleaner.full_cleanup(text, False, False)
+        logging.debug(f'evaluating with simple\n{expr}')
+        value = simple_eval(expr)
+        if int(value) == value:
+            value = int(value)
+        result += str(value)
         return result
 
     @staticmethod
     def advanced_eval_wrapper(text):
-        text, result = Evaluator.add_equals(text)
-        return result + str(Evaluator.advanced_eval(text, Evaluator.map_brackets(text)))
+        text, result = Cleaner.full_cleanup(text, True, False)
+        value = Evaluator.advanced_eval(text, Evaluator.map_brackets(text))
+        if int(value) == value:
+            value = int(value)
+        return result + str(value)
 
     @staticmethod
     def advanced_eval(text, jump_list, substring_start=0):
+        logging.debug(f'evaluating, advanced called with\n{text}')
         simplified = ''
         simplified_last = 0
         i = 0
@@ -81,3 +73,13 @@ class Evaluator:
             return math.sin(number)
         if func == 'cos':
             return math.cos(number)
+
+    @staticmethod
+    def wolfram_eval(text):
+        text, result = Cleaner.full_cleanup(text, True, True)
+        response = requests.get(f'https://api.wolframalpha.com/v2/query?input={text}&appid={Preferences.appid}')
+        soup = BeautifulSoup(response.content, 'html.parser')
+        plaintext = soup.get_text()
+        fields = list(filter(None, plaintext.split('\n')))
+        answer = fields[1]
+        return result + answer
