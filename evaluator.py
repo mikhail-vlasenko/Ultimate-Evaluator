@@ -1,5 +1,6 @@
 from simpleeval import simple_eval
 import math
+import re
 import requests
 from bs4 import BeautifulSoup
 from preferences import Preferences
@@ -22,6 +23,21 @@ class Evaluator:
         return jump_list
 
     @staticmethod
+    def eval_factorial(text):
+        fact = re.compile('[(]?[0-9.]+[)]?!')
+        factorials = re.findall(fact, text)
+        for f in factorials:
+            number = float(re.findall(r'[0-9.]+', f)[0])
+            if number != int(number):
+                raise ValueError
+            number = math.factorial(int(number))
+            if f[0] == '(' and f[-2] == ')':
+                text = text.replace(f, '(' + str(number) + ')')
+            else:
+                text = text.replace(f, str(number))
+        return text
+
+    @staticmethod
     def simple_eval(text):
         expr, result = Cleaner.full_cleanup(text, False, False)
         logging.debug(f'evaluating with simple\n{expr}')
@@ -33,7 +49,7 @@ class Evaluator:
 
     @staticmethod
     def advanced_eval_wrapper(text):
-        text, result = Cleaner.full_cleanup(text, True, False)
+        text, result = Cleaner.full_cleanup(text, True, True)
         value = Evaluator.advanced_eval(text, Evaluator.map_brackets(text))
         if int(value) == value:
             value = int(value)
@@ -41,6 +57,21 @@ class Evaluator:
 
     @staticmethod
     def advanced_eval(text, jump_list, substring_start=0):
+        """
+        recursive function that evaluates expressions with log(), sin(), etc
+
+        simplified is a resulting string in the current recursive call
+        for text '1+log2(4)'
+        simplified will first become '1+', and then, after recursive call is completed, '1+2.0'
+
+        simplified_last stores the index of the text, which was last translated to simplified.
+        it is necessary as simplified is not updated on every iteration
+
+        :param text: text to evaluate on this recursive iteration
+        :param jump_list: list that maps parentheses
+        :param substring_start: index of substring start in initial string. useful for accessing jump_list
+        :return: number, result of evaluation
+        """
         logging.debug(f'evaluating, advanced called with\n{text}')
         simplified = ''
         simplified_last = 0
@@ -53,10 +84,14 @@ class Evaluator:
                 while text[j] != '(':
                     func += text[j]
                     j += 1
-                substring = text[j+1:jump_list[substring_start + j] - substring_start]
+                substring = text[j+1:jump_list[substring_start + j] - substring_start]  # substring between the brackets
                 sub_res = Evaluator.advanced_eval(substring, jump_list, substring_start+j+1)
                 simplified += str(Evaluator.eval_func(func, sub_res))
-                i = jump_list[substring_start + j]
+                i = jump_list[substring_start + j] - substring_start
+                simplified_last = i + 1
+            if text[i] == '!':
+                simplified += text[simplified_last:i+1]
+                simplified = Evaluator.eval_factorial(simplified)
                 simplified_last = i + 1
             i += 1
         if simplified == '':

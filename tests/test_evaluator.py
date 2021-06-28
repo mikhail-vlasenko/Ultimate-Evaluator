@@ -31,6 +31,12 @@ class TestEvaluator(TestCase):
         self.assertIn('1.7917', Evaluator.advanced_eval_wrapper('ln(6)'))
         self.assertIn('0.8414', Evaluator.advanced_eval_wrapper('sin(1)'))
 
+    def test_advanced_factorial(self):
+        self.assertEqual(Evaluator.advanced_eval_wrapper('5!'), ' = 120')
+        self.assertEqual(Evaluator.advanced_eval_wrapper('log2(16)!'), ' = 24')
+        self.assertEqual(Evaluator.advanced_eval_wrapper('log2(2!)!'), ' = 1')
+        self.assertRaises(ValueError, Evaluator.advanced_eval_wrapper, 'ln(5)!')
+
     def test_advanced_deep(self):
         self.assertIn('0.8905', Evaluator.advanced_eval_wrapper('sin(ln(3))'))
 
