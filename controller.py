@@ -9,6 +9,7 @@ class Controller:
     def __init__(self, window):
         self.hotkey_pressed = False
         self.window = window
+        pyautogui.PAUSE = Preferences.key_press_pause
 
     @staticmethod
     def copy():
