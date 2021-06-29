@@ -1,8 +1,13 @@
 from controller import Controller
+from gui import GuiWindow
 import logging
+import threading
 
 
 if __name__ == '__main__':
     logging.basicConfig(filename='evaluator.log', level=logging.DEBUG)
-    controller = Controller()
-    controller.start()
+    window = GuiWindow()
+    controller = Controller(window)
+    cont_thread = threading.Thread(target=controller.start)
+    cont_thread.start()
+    window.mainloop()

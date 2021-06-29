@@ -1,14 +1,14 @@
 import pyautogui
 from pynput import keyboard
-from tkinter import Tk
 from evaluator import Evaluator
 from preferences import Preferences
 import logging
 
 
 class Controller:
-    def __init__(self):
+    def __init__(self, window):
         self.hotkey_pressed = False
+        self.window = window
 
     @staticmethod
     def copy():
@@ -21,9 +21,8 @@ class Controller:
     def write(text):
         pyautogui.typewrite(text)
 
-    @staticmethod
-    def read_clipboard():
-        return Tk().clipboard_get()
+    def read_clipboard(self):
+        return self.window.clipboard_get()
 
     def on_press(self, key):
         pass
