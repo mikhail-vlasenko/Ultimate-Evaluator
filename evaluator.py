@@ -6,6 +6,7 @@ from bs4 import BeautifulSoup
 from preferences import Preferences
 import logging
 from cleaner import Cleaner
+import traceback
 
 
 class Evaluator:
@@ -40,8 +41,12 @@ class Evaluator:
         expr, result = Cleaner.full_cleanup(text, True, False, False)
         logging.debug(f'evaluating with simple\n{expr}')
         expr = Evaluator.eval_factorial(expr)
-        print(expr)
-        value = simple_eval(expr)
+        try:
+            value = simple_eval(expr)
+        except IndexError:
+            logging.debug('error during basic computation')
+            traceback.print_exc()
+            return ''
         if int(value) == value:
             value = int(value)
         result += str(value)
@@ -50,7 +55,12 @@ class Evaluator:
     @staticmethod
     def advanced_eval_wrapper(text):
         text, result = Cleaner.full_cleanup(text, True, True, False)
-        value = Evaluator.advanced_eval(text, Evaluator.map_brackets(text))
+        try:
+            value = Evaluator.advanced_eval(text, Evaluator.map_brackets(text))
+        except IndexError:
+            logging.debug('error during advanced computation')
+            traceback.print_exc()
+            return ''
         if int(value) == value:
             value = int(value)
         return result + str(value)
@@ -94,8 +104,7 @@ class Evaluator:
                 simplified = Evaluator.eval_factorial(simplified)
                 simplified_last = i + 1
             i += 1
-        if simplified == '':
-            return simple_eval(text)
+        simplified += text[simplified_last:len(text)]
         return simple_eval(simplified)
 
     @staticmethod
