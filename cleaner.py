@@ -7,12 +7,14 @@ class Cleaner:
         return re.sub(r'[a-zA-Z]', '', text)
 
     @staticmethod
-    def remove_symbols(text, keep_comma_fact):
+    def remove_symbols(text, keep_fact, keep_comma):
         text = re.sub(r'\^', '**', text)
-        spaces = re.compile('[ \t\n:?<>]')
+        spaces = re.compile('[ \t\n:?<>|{}]')
         text = re.sub(spaces, '', text)
-        if not keep_comma_fact:
-            text = re.sub(r'[,!]', '', text)
+        if not keep_fact:
+            text = re.sub(r'!', '', text)
+        if not keep_comma:
+            text = re.sub(r',', '', text)
         return text
 
     @staticmethod
@@ -35,8 +37,8 @@ class Cleaner:
         return text
 
     @staticmethod
-    def full_cleanup(text, keep_letters, keep_comma_fact):
-        text, result = Cleaner.add_equals(Cleaner.remove_symbols(text, keep_comma_fact))
+    def full_cleanup(text, keep_fact, keep_letters, keep_comma):
+        text, result = Cleaner.add_equals(Cleaner.remove_symbols(text, keep_fact, keep_comma))
         text = Cleaner.fix_percents(text)
         if keep_letters:
             return text, result

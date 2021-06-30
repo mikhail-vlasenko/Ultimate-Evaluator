@@ -24,23 +24,23 @@ class Evaluator:
 
     @staticmethod
     def eval_factorial(text):
-        fact = re.compile('[(]?[0-9.]+[)]?!')
+        fact = re.compile('[0-9.]+[)]*!')
         factorials = re.findall(fact, text)
         for f in factorials:
-            number = float(re.findall(r'[0-9.]+', f)[0])
+            digits = re.findall(r'[0-9.]+', f)[0]
+            number = float(digits)
             if number != int(number):
                 raise ValueError
             number = math.factorial(int(number))
-            if f[0] == '(' and f[-2] == ')':
-                text = text.replace(f, '(' + str(number) + ')')
-            else:
-                text = text.replace(f, str(number))
+            text = text.replace(f, str(number) + f[len(digits):-1])
         return text
 
     @staticmethod
     def simple_eval(text):
-        expr, result = Cleaner.full_cleanup(text, False, False)
+        expr, result = Cleaner.full_cleanup(text, True, False, False)
         logging.debug(f'evaluating with simple\n{expr}')
+        expr = Evaluator.eval_factorial(expr)
+        print(expr)
         value = simple_eval(expr)
         if int(value) == value:
             value = int(value)
@@ -49,7 +49,7 @@ class Evaluator:
 
     @staticmethod
     def advanced_eval_wrapper(text):
-        text, result = Cleaner.full_cleanup(text, True, True)
+        text, result = Cleaner.full_cleanup(text, True, True, False)
         value = Evaluator.advanced_eval(text, Evaluator.map_brackets(text))
         if int(value) == value:
             value = int(value)
@@ -111,7 +111,7 @@ class Evaluator:
 
     @staticmethod
     def wolfram_eval(text):
-        text, result = Cleaner.full_cleanup(text, True, True)
+        text, result = Cleaner.full_cleanup(text, True, True, True)
         response = requests.get(f'https://api.wolframalpha.com/v2/query?input={text}&appid={Preferences.appid}')
         soup = BeautifulSoup(response.content, 'html.parser')
         plaintext = soup.get_text()
