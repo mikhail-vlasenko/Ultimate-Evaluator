@@ -37,12 +37,21 @@ class Evaluator:
         return text
 
     @staticmethod
-    def simple_eval(text):
+    def eval_constants(text):
+        pi = re.compile('[(]pi[)]')  # matches (pi), parenthesis are mandatory
+        e = re.compile('[(]e[)]')
+        text = re.sub(pi, str(math.pi), text)
+        text = re.sub(e, str(math.e), text)
+        return text
+
+    @staticmethod
+    def basic_eval(text):
         expr, result = Cleaner.full_cleanup(text, True, False, False)
         logging.debug(f'evaluating with simple\n{expr}')
+        expr = Evaluator.eval_constants(expr)
         expr = Evaluator.eval_factorial(expr)
         try:
-            value = simple_eval(expr)
+            value = round(simple_eval(expr), Preferences.precision)
         except IndexError:
             logging.debug('error during basic computation')
             traceback.print_exc()
@@ -55,8 +64,9 @@ class Evaluator:
     @staticmethod
     def advanced_eval_wrapper(text):
         text, result = Cleaner.full_cleanup(text, True, True, False)
+        text = Evaluator.eval_constants(text)
         try:
-            value = Evaluator.advanced_eval(text, Evaluator.map_brackets(text))
+            value = round(Evaluator.advanced_eval(text, Evaluator.map_brackets(text)), Preferences.precision)
         except IndexError:
             logging.debug('error during advanced computation')
             traceback.print_exc()

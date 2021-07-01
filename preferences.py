@@ -3,5 +3,7 @@ class Preferences:
     hotkey_special_key = '<Key.ctrl: <59>>'
     super_key = 'command'
     mode = 'advanced'
-    key_press_pause = 0.01
-    replace_expr = False  # replace with result or write result
+    precision = 4  # decimal places
+    key_press_pause = 0.02
+    highlighting = False  # if true, clicks right arrow after copying
+    appid = ''

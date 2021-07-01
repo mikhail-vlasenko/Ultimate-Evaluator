@@ -20,6 +20,8 @@ class Controller:
 
     @staticmethod
     def write(text):
+        if Preferences.highlighting:
+            pyautogui.press('right')
         pyautogui.typewrite(text)
 
     def read_clipboard(self):
@@ -52,6 +54,6 @@ class Controller:
         elif Preferences.mode == 'wolfram':
             result = Evaluator.wolfram_eval(text)
         else:
-            result = Evaluator.simple_eval(text)
+            result = Evaluator.basic_eval(text)
         logging.info(f'result:\n{result}')
         self.write(result)
