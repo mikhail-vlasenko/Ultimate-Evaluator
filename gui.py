@@ -17,6 +17,14 @@ class GuiWindow(Tk):
         for (text, value) in values.items():
             Radiobutton(self, text=text, variable=self.eval_mode, value=value).pack()
 
+        Label(self, text="Decimal places:").pack()
+        self.precision_entry = Entry(self)
+        self.precision_entry.pack()
+
+        Label(self, text="Wolfram appid:").pack()
+        self.appid_entry = Entry(self)
+        self.appid_entry.pack()
+
         submit_button = Button(self, text='save', command=self.save_info)
         submit_button.pack()
 
@@ -24,4 +32,6 @@ class GuiWindow(Tk):
         print('updated to ' + self.eval_mode.get())
         logging.info('updated to ' + self.eval_mode.get())
         Preferences.mode = self.eval_mode.get()
+        Preferences.precision = int(self.precision_entry.get())
+        Preferences.appid = self.appid_entry.get()
         Preferences.write('prefs.txt')
