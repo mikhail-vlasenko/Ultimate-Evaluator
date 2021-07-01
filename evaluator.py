@@ -133,7 +133,15 @@ class Evaluator:
         text, result = Cleaner.full_cleanup(text, True, True, True)
         response = requests.get(f'https://api.wolframalpha.com/v2/query?input={text}&appid={Preferences.appid}')
         soup = BeautifulSoup(response.content, 'html.parser')
-        plaintext = soup.get_text()
-        fields = list(filter(None, plaintext.split('\n')))
-        answer = fields[1]
-        return result + answer
+        decimal_div = soup.find('pod', {'id': 'DecimalApproximation'})
+        result_div = soup.find('pod', {'id': 'Result'})
+        if decimal_div:
+            decimal_actual = list(filter(None, decimal_div.getText().split('\n')))
+            return result + decimal_actual[0]
+        elif result_div:
+            result_actual = list(filter(None, result_div.getText().split('\n')))
+            return result + result_actual[0]
+        else:
+            plaintext = soup.get_text()
+            fields = list(filter(None, plaintext.split('\n')))
+            return ' -> ' + fields[0]

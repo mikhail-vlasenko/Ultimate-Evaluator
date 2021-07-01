@@ -22,6 +22,7 @@ class Controller:
     def write(text):
         if Preferences.highlighting:
             pyautogui.press('right')
+        text = text.replace('≈', ' approx. ')
         pyautogui.typewrite(text)
 
     def read_clipboard(self):

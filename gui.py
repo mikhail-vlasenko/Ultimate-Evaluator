@@ -32,6 +32,8 @@ class GuiWindow(Tk):
         print('updated to ' + self.eval_mode.get())
         logging.info('updated to ' + self.eval_mode.get())
         Preferences.mode = self.eval_mode.get()
-        Preferences.precision = int(self.precision_entry.get())
-        Preferences.appid = self.appid_entry.get()
+        if self.precision_entry.get():
+            Preferences.precision = int(self.precision_entry.get())
+        if self.appid_entry.get():
+            Preferences.appid = self.appid_entry.get()
         Preferences.write('prefs.txt')
