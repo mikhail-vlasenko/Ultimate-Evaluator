@@ -9,19 +9,19 @@ class GuiWindow(Tk):
         self.title('The Ultimate Evaluator')
         self.geometry('400x400')
 
-        self.eval_mode = StringVar(self, 'basic')
+        self.eval_mode = StringVar(self, Preferences.mode)
         values = {'Basic': 'basic',
                   'Advanced': 'advanced',
                   'Wolfram': 'wolfram'}
 
         for (text, value) in values.items():
-            Radiobutton(self, text=text, variable=self.eval_mode, value=value, indicator=0,
-                        background='light blue').pack(fill=X, ipady=5)
+            Radiobutton(self, text=text, variable=self.eval_mode, value=value).pack()
 
-        submit_button = Button(self, text='update', command=self.update_info)
+        submit_button = Button(self, text='save', command=self.save_info)
         submit_button.pack()
 
-    def update_info(self):
+    def save_info(self):
         print('updated to ' + self.eval_mode.get())
         logging.info('updated to ' + self.eval_mode.get())
         Preferences.mode = self.eval_mode.get()
+        Preferences.write('prefs.txt')
