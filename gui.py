@@ -19,10 +19,12 @@ class GuiWindow(Tk):
 
         Label(self, text="Decimal places:").pack()
         self.precision_entry = Entry(self)
+        self.precision_entry.insert(END, str(Preferences.precision))
         self.precision_entry.pack()
 
         Label(self, text="Wolfram appid:").pack()
         self.appid_entry = Entry(self)
+        self.appid_entry.insert(END, str(Preferences.appid))
         self.appid_entry.pack()
 
         submit_button = Button(self, text='save', command=self.save_info)

@@ -69,7 +69,6 @@ class Evaluator:
             value = round(Evaluator.advanced_eval(text, Evaluator.map_brackets(text)), Preferences.precision)
         except IndexError:
             logging.debug('error during advanced computation')
-            traceback.print_exc()
             return ''
         if int(value) == value:
             value = int(value)

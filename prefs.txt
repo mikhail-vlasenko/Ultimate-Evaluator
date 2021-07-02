@@ -1,0 +1,8 @@
+'\x05'
+<Key.ctrl: <59>>
+command
+basic
+
+4
+0.02
+False
