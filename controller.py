@@ -8,20 +8,21 @@ import logging
 class Controller:
     def __init__(self, window):
         self.hotkey_pressed = False
+        self.shift_down = False
+        self.highlight_hotkey_pressed = False
         self.window = window
         pyautogui.PAUSE = Preferences.key_press_pause
 
-    @staticmethod
-    def copy():
+    def copy(self):
         pyautogui.keyDown(Preferences.super_key)
         pyautogui.keyDown('c')
         pyautogui.keyUp('c')
         pyautogui.keyUp(Preferences.super_key)
+        if self.highlight_hotkey_pressed:
+            pyautogui.press('right')
 
     @staticmethod
     def write(text):
-        if Preferences.highlighting:
-            pyautogui.press('right')
         text = text.replace('≈', ' approx. ')
         pyautogui.typewrite(text)
 
@@ -29,15 +30,19 @@ class Controller:
         return self.window.clipboard_get()
 
     def on_press(self, key):
-        pass
-
-    def on_release(self, key):
         if repr(key) == Preferences.hotkey:
             self.hotkey_pressed = True
-        elif repr(key) == Preferences.hotkey_special_key:
-            if self.hotkey_pressed:
+            self.highlight_hotkey_pressed = False
+        if repr(key) == "\'\\x19\'":  # ctrl+y
+            self.highlight_hotkey_pressed = True
+            self.hotkey_pressed = False
+
+    def on_release(self, key):
+        if repr(key) == Preferences.hotkey_special_key:
+            if self.hotkey_pressed or self.highlight_hotkey_pressed:
                 self.act()
                 self.hotkey_pressed = False
+                self.highlight_hotkey_pressed = False
 
     def start(self):
         # Collect events until released
