@@ -1,6 +1,7 @@
 from tkinter import *
 from preferences import Preferences
 import logging
+import webbrowser
 
 
 class GuiWindow(Tk):
@@ -33,6 +34,11 @@ class GuiWindow(Tk):
 
         submit_button = Button(self, text='save', command=self.save_info)
         submit_button.pack()
+
+        help_link = Label(self, text='Help', fg="blue")
+        help_link.bind("<Button-1>", lambda e: webbrowser.open_new(
+            'https://github.com/mikhail-vlasenko/Ultimate-Evaluator/blob/master/README.md'))
+        help_link.pack()
 
     def save_info(self):
         print('updated to ' + self.eval_mode.get())

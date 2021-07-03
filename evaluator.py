@@ -6,7 +6,6 @@ from bs4 import BeautifulSoup
 from preferences import Preferences
 import logging
 from cleaner import Cleaner
-import traceback
 
 
 class Evaluator:

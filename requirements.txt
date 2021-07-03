@@ -1,0 +1,6 @@
+requests~=2.25.1
+PyAutoGUI~=0.9.52
+bs4~=0.0.1
+beautifulsoup4~=4.9.3
+simpleeval~=0.9.10
+pynput~=1.7.3
