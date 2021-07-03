@@ -27,6 +27,10 @@ class GuiWindow(Tk):
         self.appid_entry.insert(END, str(Preferences.appid))
         self.appid_entry.pack()
 
+        self.platform_key = StringVar(self, Preferences.super_key)
+        Radiobutton(self, text='Windows', variable=self.platform_key, value='ctrl').pack()
+        Radiobutton(self, text='Mac OS', variable=self.platform_key, value='command').pack()
+
         submit_button = Button(self, text='save', command=self.save_info)
         submit_button.pack()
 
@@ -34,6 +38,7 @@ class GuiWindow(Tk):
         print('updated to ' + self.eval_mode.get())
         logging.info('updated to ' + self.eval_mode.get())
         Preferences.mode = self.eval_mode.get()
+        Preferences.super_key = self.platform_key
         if self.precision_entry.get():
             Preferences.precision = int(self.precision_entry.get())
         if self.appid_entry.get():
