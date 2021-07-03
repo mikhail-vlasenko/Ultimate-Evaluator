@@ -12,6 +12,7 @@ class TestEvaluator(TestCase):
         self.assertEqual(Evaluator.basic_eval('4^2'), ' = 16')
         self.assertEqual(Evaluator.basic_eval('4/2'), ' = 2')
         self.assertEqual(Evaluator.basic_eval('10*30%'), ' = 3')
+        self.assertEqual(Evaluator.basic_eval('30%*100'), ' = 30')
         self.assertEqual(Evaluator.basic_eval('5!'), ' = 120')
 
     def test_equals_sign(self):
@@ -43,5 +44,6 @@ class TestEvaluator(TestCase):
 
     def test_advanced_mix(self):
         self.assertEqual(Evaluator.advanced_eval_wrapper('(5! + 6)*0.3'), ' = 37.8')
+        self.assertEqual(Evaluator.advanced_eval_wrapper('(7 + 4!*30%)/(sin(25/2*(pi))) = '), '14.2')
         self.assertIn('5.890', Evaluator.advanced_eval_wrapper('3+sin(ln(3))+2'))
         self.assertIn('2.841', Evaluator.advanced_eval_wrapper('(sin((1))+2)'))

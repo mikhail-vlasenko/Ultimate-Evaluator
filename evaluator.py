@@ -21,6 +21,8 @@ class Evaluator:
                 j = stack.pop()
                 jump_list[j] = i
                 jump_list[i] = j
+        if len(stack) != 0:
+            logging.error('unmatched bracket found')
         return jump_list
 
     @staticmethod
@@ -53,8 +55,10 @@ class Evaluator:
         try:
             value = round(simple_eval(expr), Preferences.precision)
         except IndexError:
-            logging.debug('error during basic computation')
-            traceback.print_exc()
+            logging.error('index error during basic computation')
+            return ''
+        except SyntaxError:
+            logging.error('syntax error during basic computation')
             return ''
         if int(value) == value:
             value = int(value)
@@ -68,7 +72,10 @@ class Evaluator:
         try:
             value = round(Evaluator.advanced_eval(text, Evaluator.map_brackets(text)), Preferences.precision)
         except IndexError:
-            logging.debug('error during advanced computation')
+            logging.error('index error during advanced computation')
+            return ''
+        except SyntaxError:
+            logging.error('syntax error during advanced computation')
             return ''
         if int(value) == value:
             value = int(value)

@@ -29,12 +29,7 @@ class Cleaner:
 
     @staticmethod
     def fix_percents(text):
-        percent = re.compile('[0-9]*[.]?[0-9]+%')
-        percents = re.findall(percent, text)
-        for p in percents:
-            number = float(p[:-1]) / 100
-            text = text.replace(p, str(number))
-        return text
+        return text.replace('%', '/100')
 
     @staticmethod
     def full_cleanup(text, keep_fact, keep_letters, keep_comma):
