@@ -1,6 +1,6 @@
-'\x05'
-<Key.ctrl: <59>>
-command
+<Key.ctrl_l: <162>>,<Key.alt_l: <164>>,<69>
+<Key.ctrl_l: <162>>,<Key.alt_l: <164>>,<72>
+ctrl
 basic
 
 4

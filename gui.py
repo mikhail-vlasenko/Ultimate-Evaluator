@@ -2,11 +2,13 @@ from tkinter import *
 from preferences import Preferences
 import logging
 import webbrowser
+from controller import HotkeyCaptor
 
 
 class GuiWindow(Tk):
     def __init__(self):
         super().__init__()
+        self.captor = HotkeyCaptor()
         self.title('The Ultimate Evaluator')
         self.geometry('400x400')
 
@@ -32,8 +34,14 @@ class GuiWindow(Tk):
         Radiobutton(self, text='Windows', variable=self.platform_key, value='ctrl').pack()
         Radiobutton(self, text='Mac OS', variable=self.platform_key, value='command').pack()
 
-        submit_button = Button(self, text='save', command=self.save_info)
+        submit_button = Button(self, text='Save', command=self.save_info)
         submit_button.pack()
+
+        hotkey_button = Button(self, text='Set main hotkey', command=self.get_hotkey)
+        hotkey_button.pack()
+
+        hotkey_button2 = Button(self, text='Set highlight hotkey', command=lambda: self.get_hotkey(True))
+        hotkey_button2.pack()
 
         help_link = Label(self, text='Help', fg="blue")
         help_link.bind("<Button-1>", lambda e: webbrowser.open_new(
@@ -50,3 +58,7 @@ class GuiWindow(Tk):
         if self.appid_entry.get():
             Preferences.appid = self.appid_entry.get()
         Preferences.write('prefs.txt')
+
+    def get_hotkey(self, highlight=False):
+        self.captor.capture_hotkey(highlight)
+        self.save_info()

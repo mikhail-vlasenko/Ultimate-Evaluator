@@ -1,6 +1,6 @@
 class Preferences:
-    hotkey = "\'\\x05\'"  # ctrl + e KeyCode
-    hotkey_special_key = '<Key.ctrl: <59>>'
+    hotkey = ['<Key.ctrl: <59>>', "\'\\x05\'"]  # ctrl + e KeyCode
+    hotkey_highlight = []
     super_key = 'command'
     mode = 'advanced'
     appid = ''
@@ -12,8 +12,8 @@ class Preferences:
     def read(file_path):
         file = open(file_path, 'r')
         lines = file.readlines()
-        Preferences.hotkey = lines[0][:-1]
-        Preferences.hotkey_special_key = lines[1][:-1]
+        Preferences.hotkey = list(lines[0][:-1].split(','))
+        Preferences.hotkey_highlight = list(lines[1][:-1].split(','))
         Preferences.super_key = lines[2][:-1]
         Preferences.mode = lines[3][:-1]
         Preferences.appid = lines[4][:-1]
@@ -25,7 +25,7 @@ class Preferences:
     @staticmethod
     def write(file_path):
         file = open(file_path, 'w')
-        variables = [Preferences.hotkey, Preferences.hotkey_special_key, Preferences.super_key,
+        variables = [','.join(Preferences.hotkey), ','.join(Preferences.hotkey_highlight), Preferences.super_key,
                      Preferences.mode, Preferences.appid, str(Preferences.precision),
                      str(Preferences.key_press_pause), str(Preferences.highlighting)]
         file.write('\n'.join(variables))
