@@ -10,7 +10,13 @@ class Preferences:
 
     @staticmethod
     def read(file_path):
-        file = open(file_path, 'r')
+        try:
+            file = open(file_path, 'r')
+        except FileNotFoundError:
+            f = open(file_path, 'x')
+            f.close()
+            Preferences.write(file_path)
+            file = open(file_path, 'r')
         lines = file.readlines()
         Preferences.hotkey = list(lines[0][:-1].split(','))
         Preferences.hotkey_highlight = list(lines[1][:-1].split(','))
