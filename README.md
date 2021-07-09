@@ -40,25 +40,30 @@ https://user-images.githubusercontent.com/27450370/124346472-4ebaff80-dbdf-11eb-
 
 ## Guide
 ### Installation
+Executables are currently not available
 1. Download executable for [windows]() or [mac]()
 2. Run the file
 3. It will probably ask a few permissions, which are necessary to simulate key presses and access clipboard
+4. Default hotkeys (`ctrl+alt+e` for evaluation of the whole line and `ctrl+alt+h` for highlighted text) may not work, but you can always reassign them.
 
 ### Usage
 1. Put the cursor on the same line as the equation (or highlight the equation, depending on a hotkey you are going to press)
-2. Press the hotkey (default `ctrl+e` or `ctrl+y` in case the equation is highlighted)
+2. Press the hotkey (default or the one you have set)
 3. No third step, it's as simple as that
 
-The app will start evaluating only after `ctrl` is released. It is important not to hold any keys in the next moment.
+The app will start evaluating only after all shortcut keys are released. It is important not to hold any keys in the next moment.
 
 The program will emulate `ctrl+c` (`cmd+c`) hotkey and will evaluate whatever appeared there.
 Keep in mind that the current version does not restore previous clipboard value.
 
-### Which hotkey to use?
+### How to assign hotkeys
+Click one of the 'set hotkey' buttons. In the next 3 seconds you have to press the desired hotkey (no more than 3 keys)
+
+### Do I need *highlight* hotkey or the *main* one?
 To decide this, open the editor and write something. Press `ctrl(cmd)+c` and look what happens. 
-1. Nothing seeems to happen but your clipboard is updated with the whole line -> just press `ctlr+e` to evaluate. Examples: Notion, Sublime 3.
-2. Nothing happens and the clipboard is not updated -> you will have to highlight the equation and press `ctrl+y` to evaluate. Examples: Google Docs
-3. The whole line is highlighted and the clipboard is updated -> `ctrl+y`
+1. Nothing seeems to happen but your clipboard is updated with the whole line -> just press the main combination to evaluate (`ctrl+alt+e`). Examples: Notion, Sublime 3.
+2. Nothing happens and the clipboard is not updated -> you will have to highlight the equation and press highlight shortcut (`ctrl+alt+h`) to evaluate. Examples: Google Docs
+3. The whole line is highlighted and the clipboard is updated -> highlight (`ctrl+alt+h`)
 
 ### How to use Wolfram mode
 To use it, you need to provide the application with the [wolfram API](https://products.wolframalpha.com/api/) appid. 
@@ -78,4 +83,5 @@ user data and clipboard data is not sent anywhere.
 
 ### Feedback
 All feedback is highly appreciated. Except criticism of GUI appearance.
+
 You can reach me via email, issues on github, or Telegram, if you know it
