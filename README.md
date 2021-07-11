@@ -5,7 +5,7 @@ Here is the solution: a multifunctional **calculator inside any text editor**.
 
 ### Literally anywhere
 
-Write text in any text field, press a hotkey, like `ctrl+e`, and you have a result typed right there
+Write text in any text field, press a hotkey, like `ctrl+e`, and you have a result typed right there!
 
 ### Functionality
 
@@ -13,12 +13,12 @@ Evaluate anything from basic arithmetics, to full capabilities of WolframAlpha.
 Customization allows to fine-tune the Ultimate Evaluator for your purpose.
 
 #### Eval modes overview
-Basic. Is suitable for arithmetics (including simple factorials `7!`, but not `(5+2)!`). 
+**Basic** is suitable for arithmetics (including simple factorials `7!`, but not `(5+2)!`). 
 Works fine even if some unrelated text is found in the clipboard.
 
-Advanced. Is suitable for most computations one does: evaluates logarithms, trigonometry, etc.
+**Advanced** is suitable for most computations one does: evaluates logarithms, trigonometry, etc.
 
-Wofram. Uses WoframAlpha's API for computation, which makes it by far the most powerful method. 
+**Wofram** uses WoframAlpha's API for computation, which makes it by far the most powerful method. 
 Takes more time than other methods and requires internet connection. 
 You need to insert appid to get it working. (look instructions below)
 
@@ -40,16 +40,16 @@ https://user-images.githubusercontent.com/27450370/124346472-4ebaff80-dbdf-11eb-
 
 ## Guide
 ### Installation
-Executables are currently not available
-1. Download executable for [windows]() or [mac]()
-2. Run the file
-3. It will probably ask a few permissions, which are necessary to simulate key presses and access clipboard
-4. Default hotkeys (`ctrl+alt+e` for evaluation of the whole line and `ctrl+alt+h` for highlighted text) may not work, but you can always reassign them.
+1. Download executable for [windows](https://drive.google.com/file/d/1ieW2f2geV105gMsCel46d804DeuvExuR/view?usp=sharing) or [mac](https://drive.google.com/file/d/1YkgpJ6i_KIPKel3oz_A6i75Ke7bJ8sXT/view?usp=sharing)
+2. Unzip the file (for mac also move the app to the Applications folder)
+3. Run the executable. Since I am an unidentified developer, MacOS will only let you run the file if you right-click it, then select *open* in drop-down menu, and finally click *Open* in the appeared window. 
+4. It will probably ask a few permissions, which are necessary to simulate key presses and access clipboard
+5. Default hotkeys may not work, but you can always reassign them. (see instructions below)
 
 ### Usage
 1. Put the cursor on the same line as the equation (or highlight the equation, depending on a hotkey you are going to press)
 2. Press the hotkey (default or the one you have set)
-3. No third step, it's as simple as that
+3. No third step, it's as simple as that!
 
 The app will start evaluating only after all shortcut keys are released. It is important not to hold any keys in the next moment.
 
@@ -57,13 +57,15 @@ The program will emulate `ctrl+c` (`cmd+c`) hotkey and will evaluate whatever ap
 Keep in mind that the current version does not restore previous clipboard value.
 
 ### How to assign hotkeys
-Click one of the 'set hotkey' buttons. In the next 3 seconds you have to press the desired hotkey (no more than 3 keys)
+Click one of the 'set hotkey' buttons. In the next 3 seconds you have to press the desired hotkey (no more than 3 keys).
 
-### Do I need *highlight* hotkey or the *main* one?
+Make sure the hotkey does not conflict with other functions. Recommended for windows: `ctrl+alt+e`, `ctrl+alt+h`; for mac: `f10`
+
+### Do I need the *highlight* hotkey or the *main* one?
 To decide this, open the editor and write something. Press `ctrl(cmd)+c` and look what happens. 
-1. Nothing seeems to happen but your clipboard is updated with the whole line -> just press the main combination to evaluate (`ctrl+alt+e`). Examples: Notion, Sublime 3.
+1. Nothing seems to happen but your clipboard is updated with the whole line -> just press the main combination to evaluate (`ctrl+alt+e`). Examples: Notion, Sublime 3.
 2. Nothing happens and the clipboard is not updated -> you will have to highlight the equation and press highlight shortcut (`ctrl+alt+h`) to evaluate. Examples: Google Docs
-3. The whole line is highlighted and the clipboard is updated -> highlight (`ctrl+alt+h`)
+3. The whole line is highlighted and the clipboard is updated -> highlight shortcut (`ctrl+alt+h`)
 
 ### How to use Wolfram mode
 To use it, you need to provide the application with the [wolfram API](https://products.wolframalpha.com/api/) appid. 
