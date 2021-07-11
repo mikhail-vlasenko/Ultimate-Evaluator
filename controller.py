@@ -31,21 +31,22 @@ class Controller:
     def read_clipboard(self):
         return self.window.clipboard_get()
 
-    def on_press(self, key):
-        hotkey_len = len(Preferences.hotkey)
+    @staticmethod
+    def check_hotkey_press(key, keys_down, hotkey):
+        hotkey_len = len(hotkey)
         for i in range(hotkey_len):
-            if repr(key) == Preferences.hotkey[i]:
-                self.keys_down[i] = True
+            if repr(key) == hotkey[i]:
+                keys_down[i] = True
 
-        if self.keys_down[0] and (hotkey_len < 2 or self.keys_down[1]) and (hotkey_len < 3 or self.keys_down[2]):
+        if keys_down[0] and (hotkey_len < 2 or keys_down[1]) and (hotkey_len < 3 or keys_down[2]):
+            return True
+        return False
+
+    def on_press(self, key):
+        if Controller.check_hotkey_press(key, self.keys_down, Preferences.hotkey):
             self.hotkey_pressed = True
 
-        hotkey_len = len(Preferences.hotkey_highlight)
-        for i in range(hotkey_len):
-            if repr(key) == Preferences.hotkey_highlight[i]:
-                self.h_keys_down[i] = True
-
-        if self.h_keys_down[0] and (hotkey_len < 2 or self.h_keys_down[1]) and (hotkey_len < 3 or self.h_keys_down[2]):
+        if Controller.check_hotkey_press(key, self.h_keys_down, Preferences.hotkey_highlight):
             self.h_hotkey_pressed = True
 
     def on_release(self, key):
@@ -87,10 +88,8 @@ class HotkeyCaptor:
         self.hotkey_seq = []
 
     def register_key(self, key):
-        if repr(key) not in self.hotkey_seq:
+        if repr(key) not in self.hotkey_seq and len(self.hotkey_seq) < 3:
             self.hotkey_seq.append(repr(key))
-        if len(self.hotkey_seq) == 3:
-            exit()
 
     def capture_hotkey(self, highlight):
         self.hotkey_seq = []
@@ -99,6 +98,7 @@ class HotkeyCaptor:
         listener.start()
         time.sleep(3)
         listener.stop()
+        logging.info(f'new hotkey set to {self.hotkey_seq}')
         if highlight:
             Preferences.hotkey_highlight = self.hotkey_seq
         else:
