@@ -6,6 +6,7 @@ from bs4 import BeautifulSoup
 from preferences import Preferences
 import logging
 from cleaner import Cleaner
+import urllib.parse
 
 
 class Evaluator:
@@ -135,7 +136,8 @@ class Evaluator:
 
     @staticmethod
     def wolfram_eval(text):
-        text, result = Cleaner.full_cleanup(text, True, True, True)
+        text, result = Cleaner.add_equals(text)
+        text = urllib.parse.quote(text)
         response = requests.get(f'https://api.wolframalpha.com/v2/query?input={text}&appid={Preferences.appid}')
         soup = BeautifulSoup(response.content, 'html.parser')
         decimal_div = soup.find('pod', {'id': 'DecimalApproximation'})

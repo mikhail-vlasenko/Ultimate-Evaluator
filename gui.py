@@ -10,7 +10,7 @@ class GuiWindow(Tk):
         super().__init__()
         self.captor = HotkeyCaptor()
         self.title('The Ultimate Evaluator')
-        self.geometry('400x400')
+        self.geometry('500x500')
 
         self.eval_mode = StringVar(self, Preferences.mode)
         values = {'Basic': 'basic',
@@ -37,9 +37,13 @@ class GuiWindow(Tk):
         submit_button = Button(self, text='Save', command=self.save_info)
         submit_button.pack()
 
+        self.hotkey_main = StringVar(self, f'Main hotkey: {Preferences.hotkey}')
+        Label(self, textvariable=self.hotkey_main).pack()
         hotkey_button = Button(self, text='Set main hotkey', command=self.get_hotkey)
         hotkey_button.pack()
 
+        self.hotkey_hl = StringVar(self, f'Highlight hotkey: {Preferences.hotkey_highlight}')
+        Label(self, textvariable=self.hotkey_hl).pack()
         hotkey_button2 = Button(self, text='Set highlight hotkey', command=lambda: self.get_hotkey(True))
         hotkey_button2.pack()
 
@@ -62,3 +66,5 @@ class GuiWindow(Tk):
     def get_hotkey(self, highlight=False):
         self.captor.capture_hotkey(highlight)
         self.save_info()
+        self.hotkey_main.set(f'Main hotkey: {Preferences.hotkey}')
+        self.hotkey_hl.set(f'Highlight hotkey: {Preferences.hotkey_highlight}')
