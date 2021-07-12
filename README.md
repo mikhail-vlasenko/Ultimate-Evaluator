@@ -72,6 +72,8 @@ To use it, you need to provide the application with the [wolfram API](https://pr
 You can get 2000 requests per month for free. 
 Appid has format XXXXXX-XXXXXXXXXX 
 
+## [Troubleshooting](https://github.com/mikhail-vlasenko/Ultimate-Evaluator/blob/master/docs/troubleshooting.md#troubleshooting)
+
 ### Warnings
 The application, especially the advanced evaluation mode, is still under testing and may occasionally produce incorrect results.
 It relies on the user to provide it with valid inputs.
